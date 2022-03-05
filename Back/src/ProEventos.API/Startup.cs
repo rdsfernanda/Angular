@@ -12,7 +12,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using ProEventos.API.Data;
+using ProEventos.Application;
+using ProEventos.Application.Contratos;
+using ProEventos.Persistence;
+using ProEventos.Persistence.Contexto;
+using ProEventos.Persistence.Contratos;
 
 namespace ProEventos.API
 {
@@ -29,11 +33,15 @@ namespace ProEventos.API
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddDbContext<DataContext>(
+            services.AddDbContext<ProEventosContext>(
 
               context =>context.UseSqlite (Configuration.GetConnectionString("Default"))
             );
             services.AddControllers();
+            services.AddScoped<IEventoService, EventoService>(); // injeção de dependência 
+            services.AddScoped<IGeralPersist, GeralPersist>(); // injeção de dependência 
+            services.AddScoped<IEventoPersist, EventoPersist>(); // injeção de dependência 
+            services.AddCors();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ProEventos.API", Version = "v1" });
@@ -55,6 +63,11 @@ namespace ProEventos.API
             app.UseRouting();
 
             app.UseAuthorization();
+            
+            app.UseCors(x => x
+                            .AllowAnyOrigin()
+                            .AllowAnyMethod()
+                            .AllowAnyHeader());
 
             app.UseEndpoints(endpoints =>
             {
