@@ -37,7 +37,8 @@ namespace ProEventos.API
 
               context =>context.UseSqlite (Configuration.GetConnectionString("Default"))
             );
-            services.AddControllers();
+            services.AddControllers()
+                    .AddNewtonsoftJson(x=> x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddScoped<IEventoService, EventoService>(); // injeção de dependência 
             services.AddScoped<IGeralPersist, GeralPersist>(); // injeção de dependência 
             services.AddScoped<IEventoPersist, EventoPersist>(); // injeção de dependência 

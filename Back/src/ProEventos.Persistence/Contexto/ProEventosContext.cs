@@ -16,6 +16,16 @@ namespace ProEventos.Persistence.Contexto
         protected override void OnModelCreating(ModelBuilder modelBuilder){
             modelBuilder.Entity<PalestranteEvento>()
                 .HasKey(PE => new {PE.EventoId, PE.PalestranteId});// cria uma chave estrangeira associando uma tabela com a outra
+
+            modelBuilder.Entity<Evento>()
+                .HasMany(e=> e.RedesSociais)
+                .WithOne(rs => rs.Evento)
+                .OnDelete(DeleteBehavior.Cascade);        
+
+             modelBuilder.Entity<Palestrante>()
+                .HasMany(e=> e.RedesSociais)
+                .WithOne(rs => rs.Palestrante)
+                .OnDelete(DeleteBehavior.Cascade);      
         }
     }
 }
