@@ -3,7 +3,6 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using ProEventos.Persistence;
 using ProEventos.Persistence.Contexto;
 
 namespace ProEventos.Persistence.Migrations
@@ -23,9 +22,6 @@ namespace ProEventos.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime?>("DataEvento")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Email")
                         .HasColumnType("TEXT");
 
@@ -35,14 +31,17 @@ namespace ProEventos.Persistence.Migrations
                     b.Property<string>("Local")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("QtdPessoas")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("Telefone")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Tema")
                         .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("dataEvento")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("qtdPessoas")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("ID");
 
@@ -182,11 +181,13 @@ namespace ProEventos.Persistence.Migrations
                 {
                     b.HasOne("ProEventos.Domain.Evento", "Evento")
                         .WithMany("RedesSociais")
-                        .HasForeignKey("EventoId");
+                        .HasForeignKey("EventoId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("ProEventos.Domain.Palestrante", "Palestrante")
                         .WithMany("RedesSociais")
-                        .HasForeignKey("PalestranteId");
+                        .HasForeignKey("PalestranteId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Evento");
 
