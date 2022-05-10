@@ -1,6 +1,8 @@
 <app-titulo [titulo]="'Perfil'"></app-titulo>
 
 <div class="card rounded shadow-sm ">
+    <!-- <p>Form value: {{form.value | json}}</p>
+        <p>Form value: {{form.status | json}}</p>  testa pelo json se o form está válido  -->
   <div class="d-flex">
     <div class="flex-fill ">
       <form [formGroup]="form">
@@ -165,10 +167,10 @@
         </div>
         <div class="card-footer">
           <div class="d-flex">
-            <button class="btn btn-outline-secondary mr-auto border">
+            <button class="btn btn-outline-secondary mr-auto border" (click)="resetForm()">
               Cancelar Alteração
             </button>
-            <button class="btn btn-success">
+            <button class="btn btn-success" [disabled]="!form.valid">
               <!-- <span class="spinner-border spinner-border-sm mr-1"></span> -->
               Salvar Alteração
             </button>

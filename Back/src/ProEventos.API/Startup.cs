@@ -17,7 +17,7 @@ using ProEventos.Application.Contratos;
 using ProEventos.Persistence;
 using ProEventos.Persistence.Contexto;
 using ProEventos.Persistence.Contratos;
-
+using AutoMapper;
 namespace ProEventos.API
 {
     public class Startup
@@ -39,6 +39,7 @@ namespace ProEventos.API
             );
             services.AddControllers()
                     .AddNewtonsoftJson(x=> x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());        
             services.AddScoped<IEventoService, EventoService>(); // injeção de dependência 
             services.AddScoped<IGeralPersist, GeralPersist>(); // injeção de dependência 
             services.AddScoped<IEventoPersist, EventoPersist>(); // injeção de dependência 

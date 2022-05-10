@@ -23,6 +23,11 @@ export class PerfilComponent implements OnInit {
   ngOnInit() {
     this.validation();
   }
+  onSubmit() : void{
+    if(this.form.invalid){
+      return;
+    }
+  }
 
   private validation(): void {
     const formOptions: AbstractControlOptions = {
@@ -42,7 +47,7 @@ export class PerfilComponent implements OnInit {
         ultimoNome: ['',  [Validators.required,Validators.minLength(4)]],
         email: ['', [Validators.required, Validators.email]],
         descricao: ['',  [Validators.required,Validators.minLength(4)]],
-        userName: ['', Validators.required],
+        //userName: ['', Validators.required],
         senha: ['', [Validators.required, Validators.minLength(6)]],
         confirmeSenha: ['', Validators.required],
         funcao:['',Validators.required],
@@ -50,5 +55,10 @@ export class PerfilComponent implements OnInit {
       },
       formOptions
     );
+  }
+  public resetForm() : void {
+//event?.preventDefault();
+    this.form.reset();
+
   }
 }

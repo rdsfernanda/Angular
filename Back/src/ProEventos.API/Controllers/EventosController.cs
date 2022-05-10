@@ -3,12 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using ProEventos.Persistence;
-using ProEventos.Domain;
-using ProEventos.Persistence.Contexto;
 using ProEventos.Application.Contratos;
 using Microsoft.AspNetCore.Http;
+using ProEventos.Application.Dtos;
 
 namespace ProEventos.API.Controllers
 {
@@ -31,8 +28,23 @@ namespace ProEventos.API.Controllers
         {
             try{
                   var eventos = await _eventoService.GetEventosByAsync(true);
-                  if(eventos==null) return NotFound("Nenhum evento encontrado"); // erro 404 de não encontrado 
-                  return Ok(eventos); // retorna registros caso encontre 
+                  if(eventos==null) return NoContent(); // se evento for ==null, retorna noContent
+                  
+                  var eventosRetorno = new List<EventoDto>();
+                  foreach(var evento in eventos)
+                  {
+                        eventosRetorno.Add(new EventoDto(){
+                        ID =evento.ID,
+                        Local = evento.Local,
+                        dataEvento=Convert.ToDateTime(evento.dataEvento),
+                        Tema=evento.Tema,
+                        qtdPessoas = evento.qtdPessoas,
+                        ImagemURL = evento.ImagemURL,
+                        Telefone = evento.Telefone,
+                        Email = evento.Email
+                        });
+                  }
+                  return Ok(eventosRetorno); // retorna registros caso encontre 
             }
             catch(Exception ex){
               
@@ -46,7 +58,7 @@ namespace ProEventos.API.Controllers
         {
               try{
                   var evento = await _eventoService.GetAllEventosByIdAsync(id,true);
-                  if(evento==null) return NotFound("Evento por ID encontrado"); // erro 404 de não encontrado 
+                  if(evento==null) return NoContent();  
                   return Ok(evento); // retorna registros caso encontre 
             }
             catch(Exception ex){
@@ -62,7 +74,7 @@ namespace ProEventos.API.Controllers
         {
               try{
                   var evento = await _eventoService.GetAllEventosByTemaAsync(tema,true);
-                  if(evento==null) return NotFound("Eventos por tema não encontrado"); // erro 404 de não encontrado 
+                  if(evento==null) return NoContent();  
                   return Ok(evento); // retorna registros caso encontre 
             }
             catch(Exception ex){
@@ -74,7 +86,7 @@ namespace ProEventos.API.Controllers
         }
 
         [HttpPost]
-        public async Task <IActionResult> Post(Evento model)
+        public async Task <IActionResult> Post(EventoDto model)
         {
            try{
                   var evento = await _eventoService.AddEventos(model);
@@ -89,7 +101,7 @@ namespace ProEventos.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task <IActionResult> Put(int id, Evento model)
+        public async Task <IActionResult> Put(int id, EventoDto model)
         {
             try{
                   var evento = await _eventoService.UpdateEvento(id,model);
