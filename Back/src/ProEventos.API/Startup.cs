@@ -41,8 +41,10 @@ namespace ProEventos.API
                     .AddNewtonsoftJson(x=> x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());        
             services.AddScoped<IEventoService, EventoService>(); // injeção de dependência 
+            services.AddScoped<ILoteService, LoteService>(); // injeção de dependência 
             services.AddScoped<IGeralPersist, GeralPersist>(); // injeção de dependência 
             services.AddScoped<IEventoPersist, EventoPersist>(); // injeção de dependência 
+            services.AddScoped<ILotePersist, LotePersist>(); 
             services.AddCors();
             services.AddSwaggerGen(c =>
             {

@@ -4,7 +4,8 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { Evento } from 'src/app/models/Evento';
-import { EventoService } from 'src/app/models/services/evento.service';
+// import { EventoService } from 'src/app/models/services/evento.service';
+import { EventoService } from '@app/services/evento.service';
 
 @Component({
   selector: 'app-evento-lista',
@@ -90,17 +91,15 @@ export class EventoListaComponent implements OnInit {
       (result: any) =>{
         if(result.message=='Deletado'){
           this.toastr.success('Evento excluído!', 'Sucesso!');
-          this.spinner.hide();
           this.carregarEventos();
         }
       },
       (error: any) =>{
         console.error(error);
         this.toastr.error(`Erro ao tentar excluir o evento ${this.eventoId}`, 'Sucesso!');
-        this.spinner.hide();
-      },
-      () =>this.spinner.hide()
-    )
+      }
+
+    ).add(()=>this.spinner.hide());
 
   }
 
