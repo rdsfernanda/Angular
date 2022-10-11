@@ -2,13 +2,13 @@ import { Evento } from "./Evento";
 
 export interface Lote {
 
-         id:number;
-         nome:string;
-         preco:number;
-         datainicio?:Date;
-         datafim?:Date;
-         quantidade:number;
-         eventoid:number;
-         eventos:Evento;
+  id: number;
+  nome: string;
+  preco: number;
+  dataInicio?: Date;
+  dataFim?: Date;
+  quantidade: number;
+  eventoId: number;
+  evento: Evento;
 }
 
