@@ -25,6 +25,8 @@ export class EventoDetalheComponent implements OnInit {
   form!: FormGroup;
   estadoSalvar ='post';
   loteAtual={id:0, nome: '' , indice:0}
+  imagemURL='assets/upload.png';
+  file!: File;
 
   get modoEditar(): boolean{
     return this.estadoSalvar=='put';
@@ -230,6 +232,31 @@ export class EventoDetalheComponent implements OnInit {
   declineDeleteLote():void{
     this.modalRef.hide();
 
+  }
+  onFileChange(ev: any): void {
+    const reader = new FileReader();
+
+    reader.onload = (event: any) => this.imagemURL = event.target.result;
+
+    this.file = ev.target.files;
+    reader.readAsDataURL(this.file[0]);
+
+    this.uploadImagem();
+  }
+
+  uploadImagem(): void {
+    this.spinner.show();
+    this.eventoService.postUpload(this.eventoId, this.file).subscribe(
+      () => {
+        this.carregarEvento();
+        this.toastr.success('Imagem atualizada com Sucesso', 'Sucesso!');
+      },
+
+      (error: any) => {
+        this.toastr.error('Erro ao fazer upload de imagem', 'Erro!');
+        console.log(error);
+      }
+    ).add(() => this.spinner.hide());
   }
 
 }

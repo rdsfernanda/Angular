@@ -18,6 +18,10 @@ using ProEventos.Persistence;
 using ProEventos.Persistence.Contexto;
 using ProEventos.Persistence.Contratos;
 using AutoMapper;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
+using Microsoft.AspNetCore.Http;
+
 namespace ProEventos.API
 {
     public class Startup
@@ -72,6 +76,14 @@ namespace ProEventos.API
                             .AllowAnyOrigin()
                             .AllowAnyMethod()
                             .AllowAnyHeader());
+
+                                //Configurando diretório para upload de arquivo (imagem)
+                             app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Resources")),
+                RequestPath = new PathString("/Resources")
+            });
+
 
             app.UseEndpoints(endpoints =>
             {

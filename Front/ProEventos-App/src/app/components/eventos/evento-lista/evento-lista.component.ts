@@ -85,7 +85,7 @@ export class EventoListaComponent implements OnInit {
 
   confirm(): void {
 
-    this.modalRef?.hide();
+    this.modalRef?.hide();event
     this.spinner.show();
     this.eventoService.deleteEvento(this.eventoId).subscribe(
       (result: any) =>{
